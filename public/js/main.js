@@ -1,6 +1,9 @@
 
-class malade {
-    constructor(nom, maladie, argent, poche, etatDeSante, traitement){
+
+
+
+class Malade {
+    constructor(nom, maladie, argent, poche, etatDeSante, traitement) {
         this.nom = nom;
         this.maladie = maladie;
         this.argent = argent;
@@ -9,92 +12,100 @@ class malade {
         this.traitement = traitement;
     }
 
-    goTo(malade){
-        this.pharmacie.push(malade)
+    goTo(depart, arrive) {
+        pharma.lieux.push(Malade)        
+        docteur.cabinet.push(Malade)
     }
 
-    takeCare(){
-        
-    }
-
-    paye(){
+    takeCare() {
 
     }
-}
 
-let marcus = new malade("Marcus","Mal indenté", 100, [], "malade",[]);
-let optimus = new malade("Optimus","Unsave", 200, [], "malade",[]);
-let sangoku = new malade("Sangoku","404", 80, [], "malade",[]);
-let darthvader = new malade("DarthVader","azmatique", 100, [], "malade",[]);
-let semicolon = new malade("Semicolon","Syntaxerror", 60, [], "malade",[]);
+    paye() {
+        if (Malade.argent >= prixTraitement) {
 
 
+            Malade.argent -= prixTraitement;
+            pharma.caisse += prixTraitement;
+            this.personne.push(Malade);
 
-
-
-
-class docteur {
-    constructor(nom, argent, cabinet, diagnostique,){
-        this.nom = nom;
-        this.argent = argent;
-        this.cabinet = cabinet;
-        this.diagnostique = diagnostique;
-    }
-
-    patientIn(malade){
-            this.cabinet.push(malade)
-            this.argent = 0+50
-    }
-    
-    diagnostique(maladie, traitement){
-        switch (malade.maladie) {
-            case "mal indenté":
-                malade.poche.push(prescri)
-                break;
-        
-            default:
-                break;
+        } 
+        else {
+            console.log(`${Malade.nom} est mort.`)
         }
-
-    }
-
-    patientOut(){
-        malade.goTo
     }
 }
 
-let docdoc = new docteur("Toubib", 0,["chat"], "");
 
-let prescri1 = "index1"
+let marcus = new Malade("Marcus", "Mal indenté", 100, [], "malade", []);
+let optimus = new Malade("Optimus", "Unsave", 200, [], "malade", []);
+let sangoku = new Malade("Sangoku", "404", 80, [], "malade", []);
+let darthvader = new Malade("DarthVader", "azmatique", 100, [], "malade", []);
+let semicolon = new Malade("Semicolon", "Syntaxerror", 60, [], "malade", []);
 
+//PARTIE DOCTEUR
 
+let docteur = {
+    nom: 'docdoc',
+    argent: 0,
+    cabinet: ["chat"],
+    diagnostique: [],
+    prescription: [`Pctrl+maj+f`, `PsaveOnFocusChange`, `PCheckLinkRelation`, `PVentoline`, `Pf12+doc`],
 
+    patientIn(depart, arrive) {
+        waiting.splice(1);
+        this.cabinet.push(Malade)
+        this.argent = 0 + 50
+        Malade.argent = -50
+    },
 
+    examen(prescri) {
+        switch (Malade.maladie) {
+            case "mal indenté":
+                Malade.poche.push(docteur.prescription[0])
+                docteur.prescription.splice(0, 1);
+                break;
+            case "Unsave":
+                Malade.poche.push(docteur.prescription[1])
+                docteur.prescription.splice(1, 1);
+                break;
+            case "404":
+                Malade.poche.push(docteur.prescription[2])
+                docteur.prescription.splice(2, 1);
+                break;
+            case "azmatique":
+                Malade.poche.push(docteur.prescription[3])
+                docteur.prescription.splice(3, 1);
+                break;
+            case "Syntaxerror":
+                Malade.poche.push(docteur.prescription[4])
+                docteur.prescription.splice(4, 1);
+                break;
 
+        }
+    },
 
-class pharmacie  {
-    constructor(lieux, traitement){
-        this.lieux = lieux;
-        this.traitement = traitement;
-    }
+    patientOut(depart, arrive) {
+        pharma.lieux.push(Malade)
+        docteur.cabinet.splice(1);
 
-        
+    },
 }
 
-let pharma = new  pharmacie([], [`ctrl+maj+f`, `saveOnFocusChange`, `CheckLinkRelation`, `Ventoline`, `f12+doc` ])
 
-let waiting = [];
+let pharma = {
 
-// class diagnostique {
-//     constructor(maladie, traitement ){
-//         this.maladie = maladie ;
-//         this.traitement = traitement ;
-//     }
-// }
+    lieux: [],
+    traitement: [`ctrl+maj+f`, `saveOnFocusChange`, `CheckLinkRelation`, `Ventoline`, `f12+doc`],
+    caisse: 0,
+}
 
-// let malIndente = new diagnostique("mal indenté", `ctrl+maj+f`)
-// let unsave = new diagnostique("unsave", `saveOnFocusChance`)
-// let error = new diagnostique("404", `checklinkrelation`)
-// let azmatique = new diagnostique("azmatique", `ventoline`)
-// let syntaxerror = new diagnostique("mal indenté",`f12+doc`)
 
+
+let waiting = [marcus, optimus, sangoku, darthvader, semicolon];
+
+
+marcus.goTo(waiting, docteur.cabinet)
+waiting.splice(0, 1);
+console.log(waiting);
+console.log(docteur.cabinet);
